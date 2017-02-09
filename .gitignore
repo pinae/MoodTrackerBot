@@ -90,3 +90,10 @@ ENV/
 
 # PyCharm
 .idea/
+
+# Keep the api key private
+apikey.py
+
+# data files
+users.txt
+mood_data.csv
