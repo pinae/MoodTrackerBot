@@ -42,7 +42,7 @@ def on_chat_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
     if content_type == 'text':
         user_id = msg['chat']['id']
-        if msg['text'] in ["/start", "Hallo", "Hi", "Start"]:
+        if msg['text'] in ["/start", "/start start", "Hallo", "Hi", "Start"]:
             if user_id not in users:
                 users.append(user_id)
                 write_users(users)
@@ -51,6 +51,10 @@ def on_chat_message(msg):
             users.remove(user_id)
             write_users(users)
             bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
+        elif msg['text'].startswith("/"):
+            bot.sendMessage(user_id, "Mit dem Befehl `" + msg['text'] + "` kann ich leider nichts anfangen.")
+            bot.sendMessage(user_id, "Ich verstehe nur /start und /stop. Bei allen anderen Nachrichten gehe ich " +
+                            "davon aus, dass es ein Gefühl ist.")
         else:  # It must be a mood
             with open("mood_data.csv", 'a') as data_file:
                 data_file.write("\n" + ", ".join([str(user_id), str(msg['date']), "".join(msg['text'].split(','))]))
