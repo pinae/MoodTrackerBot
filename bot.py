@@ -12,7 +12,7 @@ import re
 
 def write_users(user_list):
     with open("users.txt", 'w') as users_file:
-        users_file.writelines([str(uid) for uid in user_list])
+        users_file.write("\n".join([str(uid) for uid in user_list]))
 
 
 def get_users():
