@@ -58,6 +58,7 @@ def on_chat_message(msg):
             elif plot_regex.match(msg['text']):
                 matches = plot_regex.match(msg['text'])
                 if len(matches.groups()) >= 2:
+                    print(matches.groups())
                     offset = int(matches.groups()[1])
                 else:
                     offset = 0
