@@ -64,7 +64,8 @@ def on_chat_message(msg):
                     offset = 0
                 times, mood_values = read_day(user_id, offset)
                 plot_day(times, mood_values).savefig("tmp.png")
-                bot.sendPhoto(chat_id, "tmp.png")
+                with open("tmp.png", 'rb') as imagefile:
+                    bot.sendPhoto(chat_id, imagefile)
                 os.remove("tmp.png")
             elif msg['text'].startswith("/"):
                 bot.sendMessage(user_id, "Mit dem Befehl `" + msg['text'] + "` kann ich leider nichts anfangen.")
