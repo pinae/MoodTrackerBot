@@ -35,6 +35,8 @@ def read_day(user_id, offset=0):
 
 
 def plot_day(x, y):
+    f = plt.figure()
+    sp = f.add_subplot(111)
     plt.ylim([-2, 2])
     plt.subplots_adjust(bottom=0.1)
     plt.subplots_adjust(top=0.98)
@@ -44,10 +46,12 @@ def plot_day(x, y):
     ax = plt.gca()
     xfmt = md.DateFormatter('%H:%M')
     ax.xaxis.set_major_formatter(xfmt)
-    plt.plot(x, y, marker='d')
-    return plt
+    sp.plot(x, y, marker='d')
+    return f
 
 
 if __name__ == "__main__":
     times, mood_values = read_day(9700336, 5)
+    plot_day(times, mood_values).savefig("tmp.png")
+    times, mood_values = read_day(9700336, 2)
     plot_day(times, mood_values).savefig("tmp.png")
