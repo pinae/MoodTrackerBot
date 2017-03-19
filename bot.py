@@ -7,7 +7,9 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 from time import sleep
 from time import time as utc_time
 from datetime import datetime, time
+from draw_graph import plot_day, read_day
 import re
+import os
 
 
 def write_users(user_list):
@@ -39,6 +41,7 @@ def append_quality(number, user_id, timestamp):
 
 
 def on_chat_message(msg):
+    plot_regex = re.compile(r"^/(plot|graph|diagram) *(\d+)?$")
     try:
         content_type, chat_type, chat_id = telepot.glance(msg)
         if content_type == 'text':
@@ -52,6 +55,16 @@ def on_chat_message(msg):
                 users.remove(user_id)
                 write_users(users)
                 bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
+            elif plot_regex.match(msg['text']):
+                matches = plot_regex.match(msg['text'])
+                if len(matches.groups()) >= 2:
+                    offset = matches.groups(1)
+                else:
+                    offset = 0
+                times, mood_values = read_day(user_id, offset)
+                plot_day(times, mood_values).savefig("tmp.png")
+                bot.sendPhoto(chat_id, "tmp.png")
+                os.remove("tmp.png")
             elif msg['text'].startswith("/"):
                 bot.sendMessage(user_id, "Mit dem Befehl `" + msg['text'] + "` kann ich leider nichts anfangen.")
                 bot.sendMessage(user_id, "Ich verstehe nur /start und /stop. Bei allen anderen Nachrichten gehe ich " +
