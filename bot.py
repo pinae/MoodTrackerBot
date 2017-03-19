@@ -57,7 +57,7 @@ def on_chat_message(msg):
                 bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
             elif plot_regex.match(msg['text']):
                 matches = plot_regex.match(msg['text'])
-                if len(matches.groups()) >= 2:
+                if len(matches.groups()) >= 2 and matches.groups()[1] is not None:
                     print(matches.groups())
                     offset = int(matches.groups()[1])
                 else:
