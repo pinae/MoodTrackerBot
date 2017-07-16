@@ -8,6 +8,7 @@ from time import sleep
 from time import time as utc_time
 from datetime import datetime, time
 from draw_graph import plot_day, read_day
+from calculate_histogram import calculate_histogram
 import re
 import os
 
@@ -55,6 +56,8 @@ def on_chat_message(msg):
                 users.remove(user_id)
                 write_users(users)
                 bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
+            elif msg['text'] in ["/histogram", "/counts"]:
+                bot.sendMessage(user_id, calculate_histogram(user_id))
             elif plot_regex.match(msg['text']):
                 matches = plot_regex.match(msg['text'])
                 if len(matches.groups()) >= 2 and matches.groups()[1] is not None:
