@@ -58,7 +58,7 @@ def on_chat_message(msg):
                 bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
             elif msg['text'] in ["/histogram", "/counts"]:
                 for answer in calculate_histogram(user_id):
-                    bot.sendMessage(user_id, answer)
+                    bot.sendMessage(user_id, answer, parse_mode='Markdown')
             elif plot_regex.match(msg['text']):
                 matches = plot_regex.match(msg['text'])
                 if len(matches.groups()) >= 2 and matches.groups()[1] is not None:
