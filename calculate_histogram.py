@@ -17,12 +17,15 @@ def calculate_histogram(user_id):
                         histogram[mood.lower()] = (histogram[mood.lower()][0] + value, histogram[mood.lower()][1] + 1)
                     else:
                         histogram[mood.lower()] = (value, 1)
-    answer = ""
+    answers = [[]]
     histogram_view = [(v[0]/v[1], k) for k, v in histogram.items()]
     histogram_view.sort(reverse=True)
     for value, mood in histogram_view:
-        answer += mood + ": " + str(value) + " (" + str(histogram[mood.lower()][1]) + ")\n"
-    return "```\n" + answer + "```"
+        if len(answers[-1]) >= 10:
+            answers.append([])
+        answers[-1].append(mood + ": " + str(value) + " (" + str(histogram[mood.lower()][1]) + ")")
+    return ["```\n" + "\n".join(answer) + "\n```" for answer in answers]
 
 if __name__ == "__main__":
     print(calculate_histogram(9700336))
+    print(len(calculate_histogram(9700336)))

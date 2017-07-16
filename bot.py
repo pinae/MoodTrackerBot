@@ -57,7 +57,8 @@ def on_chat_message(msg):
                 write_users(users)
                 bot.sendMessage(user_id, "Ich frage dich ab jetzt nicht mehr.")
             elif msg['text'] in ["/histogram", "/counts"]:
-                bot.sendMessage(user_id, calculate_histogram(user_id))
+                for answer in calculate_histogram(user_id):
+                    bot.sendMessage(user_id, answer)
             elif plot_regex.match(msg['text']):
                 matches = plot_regex.match(msg['text'])
                 if len(matches.groups()) >= 2 and matches.groups()[1] is not None:
@@ -71,7 +72,8 @@ def on_chat_message(msg):
                 os.remove("tmp.png")
             elif msg['text'].startswith("/"):
                 bot.sendMessage(user_id, "Mit dem Befehl `" + msg['text'] + "` kann ich leider nichts anfangen.")
-                bot.sendMessage(user_id, "Ich verstehe nur /start und /stop. Bei allen anderen Nachrichten gehe ich " +
+                bot.sendMessage(user_id, "Ich verstehe nur /start, /stop, /plot und /histogram. " +
+                                "Bei allen anderen Nachrichten gehe ich " +
                                 "davon aus, dass es ein Gefühl ist.")
             else:  # It must be a mood
                 with open("mood_data.csv", 'a') as data_file:
